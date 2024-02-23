@@ -1,0 +1,77 @@
+import React, { useState } from 'react';
+
+// Definindo o componente principal da aplicação
+function App() {
+  // Definindo estados para armazenar as tarefas e a nova tarefa a ser adicionada
+  const [tarefas, setTarefas] = useState([]);
+  const [novaTarefa, setNovaTarefa] = useState('');
+
+  // Função para adicionar uma nova tarefa à lista de tarefas
+  const adicionarTarefa = () => {
+    // Verifica se a nova tarefa não está vazia
+    if (typeof novaTarefa === 'string' && novaTarefa.trim() !== '') {
+      // Adiciona a nova tarefa à lista de tarefas
+      setTarefas([...tarefas, { texto: novaTarefa, concluida: false }]);
+      // Limpa o campo da nova tarefa após a adição
+      setNovaTarefa('');
+    } else {
+      // Exibe um alerta caso a nova tarefa seja inválida
+      alert('Por favor, insira uma tarefa válida.');
+    }
+  };
+
+  // Função para marcar uma tarefa como concluída
+  const marcarComoConcluida = index => {
+    // Cria uma cópia das tarefas
+    const novasTarefas = [...tarefas];
+    // Marca a tarefa na posição index como concluída
+    novasTarefas[index].concluida = true;
+    // Atualiza o estado das tarefas com a nova lista que contém a tarefa marcada como concluída
+    setTarefas(novasTarefas);
+  };
+
+  // Log das tarefas atuais para depuração e rastreamento de dados
+  console.log('tarefas:', tarefas);
+
+  // Retorno do JSX que define a estrutura e interação do componente na interface
+  return (
+    <div>
+      {/* Campo de entrada para adicionar nova tarefa */}
+      <input value={novaTarefa} onChange={e => setNovaTarefa(e.target.value)} />
+      {/* Botão para adicionar tarefa */}
+      <button onClick={adicionarTarefa}>Adicionar tarefa</button>
+      {/* Lista de tarefas */}
+      <ul>
+        {tarefas.map((tarefa, index) => (
+          <li key={index}>
+            {/* Exibição do texto da tarefa */}
+            {tarefa.texto}
+            {/* Botão para marcar a tarefa como concluída, se ainda não estiver */}
+            {!tarefa.concluida && <button onClick={() => marcarComoConcluida(index)}>Marcar como concluída</button>}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+// Exporta o componente principal para uso em outros arquivos
+export default App;
+
+// ---------------------- Informações Complementares ---------------------- //
+
+// - useState é um hook do React que permite adicionar estado a componentes funcionais. Aqui, utilizamos useState
+//   para gerenciar o estado das tarefas e da nova tarefa digitada pelo usuário.
+
+// - A função adicionarTarefa verifica se a nova tarefa é válida antes de adicioná-la à lista de tarefas. Isso
+//   previne a adição de tarefas vazias ou inválidas.
+
+// - Ao marcar uma tarefa como concluída, criamos uma cópia das tarefas, atualizamos o estado da tarefa marcada
+//   como concluída e, em seguida, atualizamos o estado das tarefas com essa nova lista. Isso garante a imutabilidade
+//   dos estados, evitando possíveis efeitos colaterais.
+
+// - O log das tarefas atuais no console é útil para depurar o código e rastrear o estado das tarefas durante o
+//   desenvolvimento.
+
+// - A estrutura do JSX define a interface do componente, incluindo campos de entrada para adicionar novas tarefas,
+//   botões para interagir com as tarefas e a exibição da lista de tarefas na interface do usuário.
