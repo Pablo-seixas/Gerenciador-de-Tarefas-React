@@ -1,0 +1,38 @@
+import React, { useState } from 'react';
+
+function App() {
+  const [tarefas, setTarefas] = useState([]);
+  const [novaTarefa, setNovaTarefa] = useState('');
+
+  const adicionarTarefa = () => {
+    if (typeof novaTarefa === 'string' && novaTarefa.trim() !== '') {
+      setTarefas([...tarefas, { texto: novaTarefa, concluida: false }]);
+      setNovaTarefa('');
+    } else {
+      alert('Por favor, insira uma tarefa válida.');
+    }
+  };
+
+  const marcarComoConcluida = index => {
+    const novasTarefas = [...tarefas];
+    novasTarefas[index].concluida = true;
+    setTarefas(novasTarefas);
+  };
+
+  return (
+    <div>
+      <input value={novaTarefa} onChange={e => setNovaTarefa(e.target.value)} />
+      <button onClick={adicionarTarefa}>Adicionar tarefa</button>
+      <ul>
+        {tarefas.map((tarefa, index) => (
+          <li key={index}>
+            {tarefa.texto}
+            {!tarefa.concluida && <button onClick={() => marcarComoConcluida(index)}>Marcar como concluída</button>}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default App;
